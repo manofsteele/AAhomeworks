@@ -1,4 +1,3 @@
-require 'byebug'
 
 class Map
   attr_accessor :map
@@ -8,7 +7,6 @@ class Map
   end
 
   def set(key, value)
-    debugger
     self.keys.include?(key) ? map[self.keys.index(key)][1] = value : @map.push([key, value])
   end
 
