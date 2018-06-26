@@ -1,10 +1,9 @@
-require 'byebug'
 class Board
   attr_accessor :cups
 
   def initialize(name1, name2)
-    @name1 == name1
-    @name2 == name2
+    @name1 = name1
+    @name2 = name2
     @cups = Array.new(14){Array.new}
     place_stones
   end
@@ -31,8 +30,14 @@ class Board
         @cups[pos] << :stone
         stones -= 1
       end
-      if stones == 0 && @cups[pos].length == 1
+      if stones == 0 && @cups[pos].length == 1 && pos != 6 && pos != 13
         return_val = :switch
+      elsif stones == 0 && @cups[pos].length > 1 && pos !=6 && pos != 13
+        return_val = pos
+      elsif stones == 0 && pos == 6 && current_player_name == @name1
+        return_val = :prompt
+      elsif stones == 0 && pos == 13 && current_player_name == @name2
+        return_val = :prompt
       end
       pos = (pos + 1) % 14
     end
