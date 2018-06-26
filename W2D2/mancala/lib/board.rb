@@ -1,3 +1,4 @@
+require 'byebug'
 class Board
   attr_accessor :cups
 
@@ -21,6 +22,7 @@ class Board
   end
 
   def make_move(start_pos, current_player_name)
+
     stones = @cups[start_pos].length
     @cups[start_pos] = []
     pos = (start_pos + 1) % 14
@@ -29,11 +31,15 @@ class Board
         @cups[pos] << :stone
         stones -= 1
       end
+      if stones == 0 && @cups[pos].length == 1
+        return_val = :switch
+      end
       pos = (pos + 1) % 14
     end
 
     render
     next_turn((pos - 1) % 14)
+    return_val
   end
 
   def next_turn(ending_cup_idx)
