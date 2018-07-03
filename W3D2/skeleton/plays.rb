@@ -1,9 +1,10 @@
 require 'sqlite3'
 require 'singleton'
+require 'byebug'
 
 class PlayDBConnection < SQLite3::Database
   include Singleton
-
+  debugger
   def initialize
     super('plays.db')
     self.type_translation = true
@@ -59,21 +60,18 @@ class Play
         title = ?
       SQL
 
-      results.map {|result| Play.new(result)}
+      Play.new(results.first)
   end
 
   def self.find_by_playwright(name)
-    results = PlayDBConnection.instance.execute(<<-SQL, name)
+    playwright = Playwright.find_by_name(name)
+    results = PlayDBConnection.instance.execute(<<-SQL, playwright.id)
       SELECT
         *
       FROM
         plays
-      JOIN
-        playwrights
-      ON
-        plays.playwright_id = playwrights.id
       WHERE
-        playwrights.name = ?
+        playwright_id = ?
       SQL
 
       results.map {|result| Play.new(result)}
@@ -99,10 +97,11 @@ class Playwright
         name = ?
       SQL
 
-      results.map {|result| Playwright.new(result)}
+      Playwright.new(results.first)
   end
 
-  def new(options = {})
+  def initialize(options = {})
+    debugger
     @id = options['id']
     @name = options['name']
     @birth_year = options['birth_year']
@@ -123,7 +122,7 @@ class Playwright
     raise "#{self} not in database" unless @id
     PlayDBConnection.instance.execute(<<-SQL, @name, @birth_year, @id)
       UPDATE
-        plays
+        playwrights
       SET
         name = ?, birth_year = ?
       WHERE
@@ -136,13 +135,9 @@ class Playwright
       SELECT
         *
       FROM
-        playwrights
-      JOIN
         plays
-      ON
-        playwrights.id = plays.playwright_id
       WHERE
-        plays.playwright_id = ?
+        playwright_id = ?
     SQL
 
     results.map {|result| Play.new(result)}
