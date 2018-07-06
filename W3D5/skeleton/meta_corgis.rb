@@ -109,23 +109,25 @@ class MetaCorgiSnacks
     @box_id = box_id
   end
 
-  def method_missing(name, *args)
-    name = name.to_s
-    info_method_name = "get_#{name}_info"
-    tastiness_method_name = "get_#{name}_tastiness"
-    info = @snack_box.send(info_method_name, @box_id)
-    tastiness = @snack_box.send(tastiness_method_name, @box_id)
-    result = "#{name.capitalize}: #{info}: #{tastiness} "
-    tastiness > 30 ? "* #{result}" : result
-    # Your code goes here...
-  end
+  # def method_missing(name, *args)
+  #   name = name.to_s
+  #   info_method_name = "get_#{name}_info"
+  #   tastiness_method_name = "get_#{name}_tastiness"
+  #   info = @snack_box.send(info_method_name, @box_id)
+  #   tastiness = @snack_box.send(tastiness_method_name, @box_id)
+  #   result = "#{name.capitalize}: #{info}: #{tastiness} "
+  #   tastiness > 30 ? "* #{result}" : result
+  #   # Your code goes here...
+  # end
 
   def define_method(method_name)
     method_parts = method_name.split("_")
     treat_type = method_parts[1]
     treat_quality = method_parts[2]
-    method_name = name
-    value = @snack_box.send(method_name, box_id)
+    method_name = "get_by#{treat_type}_#{treat_quality}"
+    value = @snack_box.send(method_name.to_sym, @box_id)
+    result = "#{treat_type.capitalize}: #{treat_quality}: #{value} "
+    tastiness > 30 ? "* #{result}" : result
   end
 
   def self.define_snack(name)
