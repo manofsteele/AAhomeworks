@@ -6,8 +6,14 @@ const reader = readline.createInterface({
 });
 
 function askTea() {
-  reader.question("Would you like tea?", function (answer) {
-    console.log(`${answer}`);
-  reader.question()
-  })
+  reader.question('Would you like tea?', function (answer) {
+    reader.question("Would you like biscuits?", function (answer2) {
+      const firstRes = (answer === 'yes' ? 'do' : 'don\'t');
+      const secondRes = (answer2 === 'yes' ? 'do' : 'don\'t');
+    console.log(`So you ${firstRes} want tea and you ${secondRes} want biscuits.`);
+    reader.close();
+  });
+  });
 }
+
+askTea();
