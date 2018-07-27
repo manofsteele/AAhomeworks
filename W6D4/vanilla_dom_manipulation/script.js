@@ -21,7 +21,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const placeInput = document.getElementByClass("favorite-input");
     placeInput.value = "";
     const ul = document.getElementById("sf-places");
-        if (input.className === "favorite-submit") {
+    if (input.className === "favorite-submit") {
 
     }
   }
